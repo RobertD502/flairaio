@@ -27,6 +27,7 @@ class User:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'users'
 
 
 @dataclass
@@ -51,6 +52,7 @@ class Structure:
     hvac_units: dict[str, HVACUnit] | None = 'Not Fetched'
     zones: dict[str, Zone] | None = 'Not Fetched'
     schedules: dict[str, Schedule] | None = "Not Fetched"
+    type: str = 'structures'
 
 
 @dataclass
@@ -67,6 +69,7 @@ class Room:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'rooms'
 
 
 @dataclass
@@ -84,6 +87,7 @@ class Puck:
     attributes: dict[str, Any]
     relationships: dict[str, Any]
     current_reading: dict[str, Any] | None = 'Not Fetched'
+    type: str = 'pucks'
 
 
 @dataclass
@@ -101,6 +105,7 @@ class Vent:
     attributes: dict[str, Any]
     relationships: dict[str, Any]
     current_reading: dict[str, Any] | None = 'Not Fetched'
+    type: str = 'vents'
 
 
 @dataclass
@@ -118,6 +123,7 @@ class Bridge:
     attributes: dict[str, Any]
     relationships: dict[str, Any]
     current_reading: dict[str, Any] | None = 'Not Fetched'
+    type: str = 'bridges'
 
 
 @dataclass
@@ -134,6 +140,7 @@ class Thermostat:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'thermostats'
 
 
 @dataclass
@@ -150,6 +157,7 @@ class HVACUnit:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'hvac-units'
 
 
 @dataclass
@@ -166,6 +174,7 @@ class Zone:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'zones'
 
 
 @dataclass
@@ -175,3 +184,4 @@ class Schedule:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'schedules'

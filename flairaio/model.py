@@ -5,14 +5,12 @@ from dataclasses import dataclass
 from typing import Any
 
 
-
 @dataclass
 class FlairData:
     """ Dataclass for Flair data. """
 
     users: dict[str, User]
     structures: dict[str, Structure]
-
 
 
 @dataclass
@@ -30,12 +28,12 @@ class User:
     attributes: dict[str, Any]
     relationships: dict[str, Any]
 
+
 @dataclass
 class Structures:
     """ Dataclass containing all Flair Structures """
 
     structures: dict[str, Structure]
-
 
 
 @dataclass
@@ -48,6 +46,7 @@ class Structure:
     rooms: dict[str, Room] | None = 'Not Fetched'
     pucks: dict[str, Puck] | None = 'Not Fetched'
     vents: dict[str, Vent] | None = 'Not Fetched'
+    bridges: dict[str, Bridge] | None = 'Not Fetched'
     thermostats: dict[str, Thermostat] | None = 'Not Fetched'
     hvac_units: dict[str, HVACUnit] | None = 'Not Fetched'
     zones: dict[str, Zone] | None = 'Not Fetched'
@@ -68,6 +67,7 @@ class Room:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+
 
 @dataclass
 class Pucks:
@@ -104,6 +104,23 @@ class Vent:
 
 
 @dataclass
+class Bridges:
+    """ Dataclass for Flair bridges """
+
+    bridges: dict[str, Bridge]
+
+
+@dataclass
+class Bridge:
+    """ Dataclass for Flair bridge """
+
+    id: str
+    attributes: dict[str, Any]
+    relationships: dict[str, Any]
+    current_reading: dict[str, Any] | None = 'Not Fetched'
+
+
+@dataclass
 class Thermostats:
     """ Dataclass for thermostats """
 
@@ -123,7 +140,7 @@ class Thermostat:
 class HVACUnits:
     """ Dataclass for HVAC units """
 
-    hvacs: dict[str, HVAC]
+    hvacs: dict[str, HVACUnit]
 
 
 @dataclass
@@ -149,6 +166,7 @@ class Zone:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+
 
 @dataclass
 class Schedule:

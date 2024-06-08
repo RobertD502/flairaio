@@ -5,14 +5,12 @@ from dataclasses import dataclass
 from typing import Any
 
 
-
 @dataclass
 class FlairData:
     """ Dataclass for Flair data. """
 
     users: dict[str, User]
     structures: dict[str, Structure]
-
 
 
 @dataclass
@@ -29,13 +27,14 @@ class User:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'users'
+
 
 @dataclass
 class Structures:
     """ Dataclass containing all Flair Structures """
 
     structures: dict[str, Structure]
-
 
 
 @dataclass
@@ -48,10 +47,12 @@ class Structure:
     rooms: dict[str, Room] | None = 'Not Fetched'
     pucks: dict[str, Puck] | None = 'Not Fetched'
     vents: dict[str, Vent] | None = 'Not Fetched'
+    bridges: dict[str, Bridge] | None = 'Not Fetched'
     thermostats: dict[str, Thermostat] | None = 'Not Fetched'
     hvac_units: dict[str, HVACUnit] | None = 'Not Fetched'
     zones: dict[str, Zone] | None = 'Not Fetched'
     schedules: dict[str, Schedule] | None = "Not Fetched"
+    type: str = 'structures'
 
 
 @dataclass
@@ -68,6 +69,8 @@ class Room:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'rooms'
+
 
 @dataclass
 class Pucks:
@@ -84,6 +87,7 @@ class Puck:
     attributes: dict[str, Any]
     relationships: dict[str, Any]
     current_reading: dict[str, Any] | None = 'Not Fetched'
+    type: str = 'pucks'
 
 
 @dataclass
@@ -101,6 +105,25 @@ class Vent:
     attributes: dict[str, Any]
     relationships: dict[str, Any]
     current_reading: dict[str, Any] | None = 'Not Fetched'
+    type: str = 'vents'
+
+
+@dataclass
+class Bridges:
+    """ Dataclass for Flair bridges """
+
+    bridges: dict[str, Bridge]
+
+
+@dataclass
+class Bridge:
+    """ Dataclass for Flair bridge """
+
+    id: str
+    attributes: dict[str, Any]
+    relationships: dict[str, Any]
+    current_reading: dict[str, Any] | None = 'Not Fetched'
+    type: str = 'bridges'
 
 
 @dataclass
@@ -117,13 +140,14 @@ class Thermostat:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'thermostats'
 
 
 @dataclass
 class HVACUnits:
     """ Dataclass for HVAC units """
 
-    hvacs: dict[str, HVAC]
+    hvacs: dict[str, HVACUnit]
 
 
 @dataclass
@@ -133,6 +157,7 @@ class HVACUnit:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'hvac-units'
 
 
 @dataclass
@@ -149,6 +174,8 @@ class Zone:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'zones'
+
 
 @dataclass
 class Schedule:
@@ -157,3 +184,4 @@ class Schedule:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+    type: str = 'schedules'

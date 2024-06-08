@@ -15,7 +15,7 @@ from flairaio.constants import (
     TIMEOUT,
 )
 from flairaio.exceptions import FlairError, FlairAuthError
-from flairaio.model import (FlairData, HVACUnit, HVACUnits, Puck, Pucks, Room,
+from flairaio.model import (Bridge, Bridges, FlairData, HVACUnit, HVACUnits, Puck, Pucks, Room,
                             Rooms, Schedule, Structure, Structures, Thermostat,
                             Thermostats, User, Users, Vent, Vents, Zone, Zones,)
 
@@ -56,7 +56,7 @@ class FlairClient:
             Header.CLIENT_ID: self.client_id,
             Header.CLIENT_SECRET: self.client_secret,
             "scope": Header.SCOPES,
-            "grant_type": Header.GRANT_TYPE
+            "grant_type": Header.GRANT_CLIENT_CRED
         }
 
         response = await self._post(Endpoint.AUTH_URL, headers, data)
@@ -209,6 +209,31 @@ class FlairClient:
             relationships=vent['data']['relationships'],
         )
 
+    async def get_bridges(self) -> Bridges:
+        """Get all bridges."""
+
+        fetched_bridges = await self._get(Endpoint.BRIDGES_URL)
+        bridges: dict[str, Bridge] = {}
+        if fetched_bridges['data']:
+            for bridge in fetched_bridges['data']:
+                bridges[bridge['id']] = Bridge(
+                    id=bridge['id'],
+                    attributes=bridge['attributes'],
+                    relationships=bridge['relationships'],
+                )
+        return Bridges(bridges=bridges)
+
+    async def get_bridge(self, bridge_id: str) -> Bridge:
+        """Get a single bridge."""
+
+        url = f'{Endpoint.BRIDGES_URL}/{bridge_id}'
+        bridge = await self._get(url)
+        return Bridge(
+            id=bridge['data']['id'],
+            attributes=bridge['data']['attributes'],
+            relationships=bridge['data']['relationships'],
+        )
+
     async def get_thermostats(self) -> Thermostats:
         """Get all thermostats."""
 
@@ -313,6 +338,7 @@ class FlairClient:
         hvac_units_data: dict[str, HVACUnit] = {}
         zones_data: dict[str, Zone] = {}
         schedules_data: dict[str, Schedule] = {}
+        bridges_data: dict[str, Bridge] = {}
 
         response = await self.get_structures()
         if response.structures:
@@ -399,6 +425,24 @@ class FlairClient:
                             relationships=schedule['relationships'],
                         )
 
+                # Related Bridges
+                if related_entities[7]:
+                    for bridge in related_entities[7]:
+                        bridge_object = Bridge(
+                            id=bridge['id'],
+                            attributes=bridge['attributes'],
+                            relationships=bridge['relationships'],
+                            current_reading=None
+                        )
+                        if not bridge['attributes']['inactive']:
+                            get_reading = await self.get_related(bridge_object, 'current-reading')
+                            attributes = get_reading['attributes']
+                        else:
+                            attributes = {}
+                        setattr(bridge_object, 'current_reading', attributes)
+                        bridges_data[bridge['id']] = bridge_object
+
+
                 structures_data[response.structures[structure].id] = Structure(
                         id=response.structures[structure].id,
                         attributes=response.structures[structure].attributes,
@@ -406,6 +450,7 @@ class FlairClient:
                         rooms=rooms_data,
                         pucks=pucks_data,
                         vents=vents_data,
+                        bridges=bridges_data,
                         thermostats=thermostats_data,
                         hvac_units=hvac_units_data,
                         zones=zones_data,
@@ -424,8 +469,8 @@ class FlairClient:
     async def fetch_all_structure_relations(self, flair_object: Structure) -> list:
         """
         Parallel request are made to all related endpoints for a single structure.
-        Returns a list containing rooms, pucks, vents, thermostats, HVAC units, and Zones
-        related to said structure. This function is called by the get_flair_data function.
+        Returns a list containing rooms, pucks, vents, thermostats, HVAC units, zones, schedules,
+        and bridges related to said structure. This function is called by the get_flair_data function.
         """
 
         results = await asyncio.gather(*[
@@ -435,7 +480,8 @@ class FlairClient:
             self.get_related(flair_object, 'thermostats'),
             self.get_related(flair_object, 'hvac-units'),
             self.get_related(flair_object, 'zones'),
-            self.get_related(flair_object, 'schedules')
+            self.get_related(flair_object, 'schedules'),
+            self.get_related(flair_object, 'bridges')
             ],
         )
         return results

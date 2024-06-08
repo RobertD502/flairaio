@@ -10,6 +10,7 @@ class Endpoint(StrEnum):
 
     BASE_URL = 'https://api.flair.co'
     AUTH_URL = '/oauth2/token'
+    BRIDGES_URL = '/api/bridges'
     HVACS_URL = '/api/hvac-units'
     PUCKS_URL = '/api/pucks'
     ROOMS_URL = '/api/rooms'
@@ -30,7 +31,7 @@ class Header(StrEnum):
     CLIENT_ID = 'client_id'
     CLIENT_SECRET = 'client_secret'
     SCOPES = 'pucks.view+pucks.edit+structures.view+structures.edit+thermostats.view+users.view+users.edit+vents.view+vents.edit'
-    GRANT_TYPE = 'client_credentials'
+    GRANT_CLIENT_CRED = 'client_credentials'
 
 
 # Response error reason constants

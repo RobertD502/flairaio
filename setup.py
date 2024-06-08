@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="flairaio",
-    version="0.1.3.2",
+    version="0.2.0",
     author="Robert Drinovac",
     author_email="unlisted@gmail.com",
     description="Asynchronous Python library for Flair's API",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/RobertD502/flairaio',
-    keywords='flair, flair systems, flair api, flair api oauth2, flair client, flair vent, flair puck',
+    keywords='flair, flair systems, flair api, flair api oauth2, flair client, flair vent, flair puck, flair bridge',
     packages=setuptools.find_packages(),
     python_requires= ">=3.7",
     install_requires=[

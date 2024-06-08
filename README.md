@@ -149,6 +149,27 @@ vent = await client.get_vent(vent_id='1')
 &nbsp;
 
 <details>
+  <summary> <b>Bridges</b> (<i>click to expand</i>)</summary>
+  <!---->
+
+```python
+# See model.py for details regarding "Bridges" and "Bridge" Data Classes
+
+
+# Retrieve all bridges.
+bridges = await client.get_bridges()
+
+# Retrieve a specific bridge. Note: bridge_id is the specific bridge's ID as a string.
+bridge = await client.get_bridge(bridge_id='1')
+
+
+
+```
+</details>
+
+&nbsp;
+
+<details>
   <summary> <b>Thermostats</b> (<i>click to expand</i>)</summary>
   <!---->
 
@@ -336,6 +357,31 @@ await client.update(resource_type='vents', item_id='1', attributes=attributes, r
 </details>
 
 &nbsp;
+
+<details>
+  <summary> <b>Setting Bridge LED Brightness</b> (<i>click to expand</i>)</summary>
+  <!---->
+
+```python
+# Content of attributes and relationships dictionaries will depend on what is being updated.
+# The example below is setting the LED brightness for a specific Flair Bridge.
+# Note: Flair Bridge LED brightness accepts an int between, and including, 20-100
+
+
+# create attributes dictionary
+attributes = {
+    "led-brightness": 50
+}
+
+# Set LED brightness
+await client.update(resource_type='bridges', item_id='1', attributes=attributes, relationships={})
+
+
+```
+</details>
+
+&nbsp;
+
 <details>
   <summary> <b>Setting HVAC Unit Mode</b> (<i>click to expand</i>)</summary>
   <!---->
@@ -377,6 +423,19 @@ await client.update(resource_type='hvac-units', item_id='1', attributes=attribut
     <tr>
       <th>Resource Type</th>
       <th align="center">Related</th>
+    </tr>
+       <tr>
+      <td align="center">Bridge</td>
+      <td>
+        <ul>
+          <li>structure</li>
+          <li>current-state</li>
+          <li>hardware-version</li>
+          <li>current-reading</li>
+          <li>room</li>
+          <li>sensor-readings</li>
+          <li>bridge-states</li>
+        </ul>
     </tr>
        <tr>
       <td align="center">HVAC Unit</td>
